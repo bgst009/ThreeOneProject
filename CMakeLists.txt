@@ -3,4 +3,4 @@ project(ThreeOneProject C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(ThreeOneProject main.c)
+add_executable(ThreeOneProject main.c First/test.h header.h)
