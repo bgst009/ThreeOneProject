@@ -1,1 +1,1 @@
-/usr/bin/cc -g  -Wl,--enable-auto-import CMakeFiles/ThreeOneProject.dir/main.c.o  -o ThreeOneProject.exe -Wl,--out-implib,libThreeOneProject.dll.a -Wl,--major-image-version,0,--minor-image-version,0 
+/usr/bin/cc -g   CMakeFiles/ThreeOneProject.dir/main.c.o  -o ThreeOneProject 

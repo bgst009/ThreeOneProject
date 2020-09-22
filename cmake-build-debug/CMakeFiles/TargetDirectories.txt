@@ -1,3 +1,4 @@
-/cygdrive/f/gitee/ThreeOneProject/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/cygdrive/f/gitee/ThreeOneProject/cmake-build-debug/CMakeFiles/ThreeOneProject.dir
-/cygdrive/f/gitee/ThreeOneProject/cmake-build-debug/CMakeFiles/edit_cache.dir
+/mnt/f/gitee/ThreeOneProject/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/mnt/f/gitee/ThreeOneProject/cmake-build-debug/CMakeFiles/edit_cache.dir
+/mnt/f/gitee/ThreeOneProject/cmake-build-debug/CMakeFiles/ThreeOneProject.dir
+/mnt/f/gitee/ThreeOneProject/cmake-build-debug/CMakeFiles/LittleGame.dir

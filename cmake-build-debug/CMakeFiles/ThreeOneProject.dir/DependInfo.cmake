@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
-  "/cygdrive/f/gitee/ThreeOneProject/main.c" "/cygdrive/f/gitee/ThreeOneProject/cmake-build-debug/CMakeFiles/ThreeOneProject.dir/main.c.o"
+  "/mnt/f/gitee/ThreeOneProject/main.c" "/mnt/f/gitee/ThreeOneProject/cmake-build-debug/CMakeFiles/ThreeOneProject.dir/main.c.o"
   )
 set(CMAKE_C_COMPILER_ID "GNU")
 

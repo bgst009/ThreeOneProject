@@ -1,8 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/ThreeOneProject.dir/main.c.o"
-  "ThreeOneProject.exe"
   "ThreeOneProject.pdb"
-  "libThreeOneProject.dll.a"
+  "ThreeOneProject"
 )
 
 # Per-language clean rules from dependency scanning.

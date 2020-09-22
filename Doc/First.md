@@ -24,7 +24,7 @@ void test01() {
 
 ## 结果：
 
-![image-20200814163801700](https://gitee.com/bgst007/markdownPicUrl/raw/master/20200814163801.png)
+![image-20200814163801700](https://gitee.com/bgst009/markdownPicUrl/raw/master/20200814163801.png)
 
 # 第二题
 
@@ -60,11 +60,11 @@ void test01() {
 
 **添加完查看和断点**
 
-<img src="https://gitee.com/bgst007/markdownPicUrl/raw/master/20200814170601.png" alt="image-20200814170600887" style="zoom:87%;" />
+<img src="https://gitee.com/bgst009/markdownPicUrl/raw/master/20200814170601.png" alt="image-20200814170600887" style="zoom:87%;" />
 
 **断点调试**
 
-<img src="https://gitee.com/bgst007/markdownPicUrl/raw/master/20200814170932.png" alt="image-20200814170932016" style="zoom:87%;" />
+<img src="https://gitee.com/bgst009/markdownPicUrl/raw/master/20200814170932.png" alt="image-20200814170932016" style="zoom:87%;" />
 
 # 第三题
 
@@ -144,7 +144,7 @@ void test03() {
 
 ## 结果
 
-![image-20200814173423251](https://gitee.com/bgst007/markdownPicUrl/raw/master/20200814173423.png)
+![image-20200814173423251](https://gitee.com/bgst009/markdownPicUrl/raw/master/20200814173423.png)
 
 # 第四题
 
@@ -182,7 +182,7 @@ void test04() {
 
 ## 结果
 
-![image-20200814174504026](https://gitee.com/bgst007/markdownPicUrl/raw/master/20200814174504.png)
+![image-20200814174504026](https://gitee.com/bgst009/markdownPicUrl/raw/master/20200814174504.png)
 
 # 第五题
 
@@ -252,7 +252,7 @@ void test05() {
 
 ## 结果
 
-![image-20200814180355723](https://gitee.com/bgst007/markdownPicUrl/raw/master/20200814180355.png)
+![image-20200814180355723](https://gitee.com/bgst009/markdownPicUrl/raw/master/20200814180355.png)
 
 
 
@@ -320,7 +320,7 @@ void test07(){
 
 ## 结果
 
-![image-20200814183136190](https://gitee.com/bgst007/markdownPicUrl/raw/master/20200814183136.png)
+![image-20200814183136190](https://gitee.com/bgst009/markdownPicUrl/raw/master/20200814183136.png)
 
 # 第八题
 
@@ -351,7 +351,7 @@ void test08(){
 
 ## 结果
 
-![image-20200814184044461](https://gitee.com/bgst007/markdownPicUrl/raw/master/20200814184044.png)
+![image-20200814184044461](https://gitee.com/bgst009/markdownPicUrl/raw/master/20200814184044.png)
 
 # 第九题
 
@@ -401,7 +401,7 @@ void test09() {
 
 ## 结果
 
-![image-20200814185345041](https://gitee.com/bgst007/markdownPicUrl/raw/master/20200814185345.png)
+![image-20200814185345041](https://gitee.com/bgst009/markdownPicUrl/raw/master/20200814185345.png)
 
 # 第十题
 
@@ -412,20 +412,20 @@ void test09() {
 ## 实验过程
 
 1. 在TC 中编译完后运行
-   1. ![image-20200815152606517](https://gitee.com/bgst007/markdownPicUrl/raw/master/20200815152606.png)
+   1. ![image-20200815152606517](https://gitee.com/bgst009/markdownPicUrl/raw/master/20200815152606.png)
    2. 可以看到与预期结果不相符
 2. 添加断点 和 对 data 的查看
 3. 运行到断点后，接着输入 `m 10` 然后观察 data 的值是否正确
-   1. ![image-20200815153205303](https://gitee.com/bgst007/markdownPicUrl/raw/master/20200815153205.png)
+   1. ![image-20200815153205303](https://gitee.com/bgst009/markdownPicUrl/raw/master/20200815153205.png)
    2. 可以看到data的值为10表示输入数据正确
 4. 接下来看处理数据是否正确
-   1. ![image-20200815153535213](https://gitee.com/bgst007/markdownPicUrl/raw/master/20200815153535.png)
+   1. ![image-20200815153535213](https://gitee.com/bgst009/markdownPicUrl/raw/master/20200815153535.png)
    2. 可以发现data在传参是就发生错误
 5. 观察 `  setDate(&date, type, (int)&data);`  
 6. 可以看到传递的为data的地址而不是data 修改 为 `  setDate(&date, type,data);` 然后在运行
-   1. ![image-20200815154020298](https://gitee.com/bgst007/markdownPicUrl/raw/master/20200815154020.png)
+   1. ![image-20200815154020298](https://gitee.com/bgst009/markdownPicUrl/raw/master/20200815154020.png)
    2. 可以看到值传递正确
 7. 编译链接生成可执行文件后运行可以正确执行预期功能
-   1. ![image-20200815154329368](https://gitee.com/bgst007/markdownPicUrl/raw/master/20200815154329.png)
+   1. ![image-20200815154329368](https://gitee.com/bgst009/markdownPicUrl/raw/master/20200815154329.png)
 
 
