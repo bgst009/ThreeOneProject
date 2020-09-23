@@ -5,7 +5,7 @@
 #ifndef THREEONEPROJECT_TEST_H
 #define THREEONEPROJECT_TEST_H
 
-#include "../header.h"
+#include "../../includ/header.h"
 
 /*
  * 第一题：分别定义 char 型、int 型、long 型、float 型、double 型数据，并打印出各类型数据的值。

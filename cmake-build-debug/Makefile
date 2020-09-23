@@ -123,46 +123,6 @@ ThreeOneProject/fast:
 	$(MAKE) -f CMakeFiles/ThreeOneProject.dir/build.make CMakeFiles/ThreeOneProject.dir/build
 .PHONY : ThreeOneProject/fast
 
-#=============================================================================
-# Target rules for targets named LittleGame
-
-# Build rule for target.
-LittleGame: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 LittleGame
-.PHONY : LittleGame
-
-# fast build rule for target.
-LittleGame/fast:
-	$(MAKE) -f CMakeFiles/LittleGame.dir/build.make CMakeFiles/LittleGame.dir/build
-.PHONY : LittleGame/fast
-
-LittleGame/Ball.o: LittleGame/Ball.c.o
-
-.PHONY : LittleGame/Ball.o
-
-# target to build an object file
-LittleGame/Ball.c.o:
-	$(MAKE) -f CMakeFiles/LittleGame.dir/build.make CMakeFiles/LittleGame.dir/LittleGame/Ball.c.o
-.PHONY : LittleGame/Ball.c.o
-
-LittleGame/Ball.i: LittleGame/Ball.c.i
-
-.PHONY : LittleGame/Ball.i
-
-# target to preprocess a source file
-LittleGame/Ball.c.i:
-	$(MAKE) -f CMakeFiles/LittleGame.dir/build.make CMakeFiles/LittleGame.dir/LittleGame/Ball.c.i
-.PHONY : LittleGame/Ball.c.i
-
-LittleGame/Ball.s: LittleGame/Ball.c.s
-
-.PHONY : LittleGame/Ball.s
-
-# target to generate assembly for a file
-LittleGame/Ball.c.s:
-	$(MAKE) -f CMakeFiles/LittleGame.dir/build.make CMakeFiles/LittleGame.dir/LittleGame/Ball.c.s
-.PHONY : LittleGame/Ball.c.s
-
 main.o: main.c.o
 
 .PHONY : main.o
@@ -197,12 +157,8 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... edit_cache"
 	@echo "... ThreeOneProject"
-	@echo "... LittleGame"
-	@echo "... LittleGame/Ball.o"
-	@echo "... LittleGame/Ball.i"
-	@echo "... LittleGame/Ball.s"
+	@echo "... edit_cache"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

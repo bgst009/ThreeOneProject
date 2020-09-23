@@ -3,5 +3,4 @@ project(ThreeOneProject)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(ThreeOneProject main.c First/test.h header.h)
-add_executable(LittleGame LittleGame/Ball.c)
+add_executable(ThreeOneProject main.c src/First/test.h include/header.h)
