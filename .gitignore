@@ -1,4 +1,5 @@
 /31prj_c/turboc2/
 /31prj_c/c/
 /31prj_c/src/*.exe
+/31prj_c/src/*.obj
 /cmake-build-debug/
