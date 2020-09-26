@@ -3,3 +3,7 @@
 /31prj_c/src/*.exe
 /31prj_c/src/*.obj
 /cmake-build-debug/
+/31prj_c/src/four/*.obj
+/31prj_c/src/four/*.exe
+/31prj_c/src/three/*.obj
+/31prj_c/src/three/*.exe

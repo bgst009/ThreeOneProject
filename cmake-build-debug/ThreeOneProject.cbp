@@ -84,13 +84,7 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/mnt/f/gitee/ThreeOneProject/include/header.h">
-			<Option target="ThreeOneProject"/>
-		</Unit>
 		<Unit filename="/mnt/f/gitee/ThreeOneProject/main.c">
-			<Option target="ThreeOneProject"/>
-		</Unit>
-		<Unit filename="/mnt/f/gitee/ThreeOneProject/src/First/test.h">
 			<Option target="ThreeOneProject"/>
 		</Unit>
 		<Unit filename="/mnt/f/gitee/ThreeOneProject/CMakeLists.txt">
