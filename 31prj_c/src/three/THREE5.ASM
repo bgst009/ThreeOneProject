@@ -24,7 +24,7 @@ _main	proc	near
 	sub	sp,6
 	push	si
 ;	?debug	L 15
-	lea	bx,word ptr [bp-6]
+	lea	bx,word ptr [bp-6] ;mov bx,offset word ptr[bp-6]
 	push	ss
 	push	bx
 	call	near ptr _func
