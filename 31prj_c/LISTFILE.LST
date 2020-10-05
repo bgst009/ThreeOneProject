@@ -1,0 +1,133 @@
+Publics by module
+
+ACOSASIN	size = 316
+	_acos                             _asin
+
+ATAN    	size = 13
+	_atan                           
+
+ATAN2   	size = 195
+	_atan2                          
+
+ATOF    	size = 16
+	_atof                           
+
+CEIL    	size = 48
+	_ceil                           
+
+CLEAR87 	size = 42
+	__clear87                       
+
+COS     	size = 88
+	_cos                            
+
+COSH    	size = 120
+	_cosh                           
+
+CTRL87  	size = 46
+	__control87                     
+
+EFCVT   	size = 135
+	_ecvt                             _fcvt
+
+EXP     	size = 122
+	_exp                            
+
+FABS    	size = 15
+	_fabs                           
+
+FLAGS87 	size = 2
+	FLAGS8087@                      
+
+FLOOR   	size = 48
+	_floor                          
+
+FMOD    	size = 77
+	_fmod                           
+
+FPERR   	size = 249
+	__fperr                         
+
+FPEXCEP 	size = 734
+	FPE1st                            FPElast
+	__FPExcep                       
+
+FPRESET 	size = 5
+	__fpreset                       
+
+FREXP   	size = 56
+	_frexp                          
+
+FTOL    	size = 43
+	FTOL@                           
+
+GCVT    	size = 31
+	_gcvt                           
+
+HUGEVAL 	size = 36
+	__huge_dble                       __huge_flt
+	__huge_ldble                      __indefinite
+	__tiny_ldble                    
+
+HYPOT   	size = 96
+	_hypot                          
+
+LDEXP   	size = 138
+	_ldexp                          
+
+LDTRUNC 	size = 155
+	__LDTRUNC                       
+
+LOG     	size = 161
+	_log                            
+
+LOG10   	size = 163
+	_log10                          
+
+MATHERR 	size = 48
+	_matherr                        
+
+MODF    	size = 73
+	_modf                           
+
+POLY    	size = 118
+	_poly                           
+
+POW     	size = 407
+	_pow                            
+
+POW10   	size = 328
+	_pow10                          
+
+REALCVT 	size = 424
+	__turboCvt                      
+
+SCANTOD 	size = 897
+	__turboFloat                    
+
+SIN     	size = 88
+	_sin                            
+
+SINH    	size = 166
+	_sinh                           
+
+SQRT    	size = 75
+	_sqrt                           
+
+STAT87  	size = 22
+	__status87                      
+
+STRTOD  	size = 171
+	_strtod                         
+
+TAN     	size = 91
+	_tan                            
+
+TANH    	size = 119
+	_tanh                           
+
+XCVT    	size = 451
+	__XCVT                          
+
+_MATHERR	size = 237
+	__matherr                         _whyS
