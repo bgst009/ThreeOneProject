@@ -1,16 +1,13 @@
 int n = 0x2000;
-int c;
 int t;
+char ch;
 main() {
-    while (n != 0xffff && c != 'q') {
-        printf("offset address %xh -> data %c\n", n, *(int *)n);
-
-        printf("stop input q: ");
-        scanf("%c", &c);
-
-        printf("\ninput n: ");
-        scanf("%x", &t);
-        t += n;
-        n += *(int *)t;
+    while (n != 0xffff && ch != 'q') {
+        printf("offset address %xh -> data %x\n", n, *(int *)n);
+        if (kbhit()) {
+            ch = getch();
+        }
+        sleep(1);
+        n = *(int *)n;
     }
 }
