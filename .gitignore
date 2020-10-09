@@ -4,4 +4,4 @@
 /31prj_c/src/*.obj
 /cmake-build-debug/
 /31prj_c/src/*/*.obj
-/31prj_c/src/*/*.exe
+/31prj_c/src/*/*.e
