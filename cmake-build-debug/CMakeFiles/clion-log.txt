@@ -1,4 +1,4 @@
-/usr/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /mnt/f/gitee/ThreeOneProject
--- Configuring done
--- Generating done
--- Build files have been written to: /mnt/f/gitee/ThreeOneProject/cmake-build-debug
+WSL not found at: C:\Users\14991\AppData\Local\Microsoft\WindowsApps\debian.exe Configure
+
+Cannot get compiler information:
+	Connection refused: connect
