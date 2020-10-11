@@ -19,6 +19,10 @@ main() {
         a[n].os = *(char far *)address++;
         a[n].masm = *(char far *)address++;
         a[n].java = *(char far *)address++;
+        address++;
+        address++;
+        address++;
+        address++;
     }
 
     s->next = 0;
