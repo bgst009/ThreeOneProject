@@ -1,0 +1,1 @@
+CMain() { printf("%s\n", "hello world"); }
