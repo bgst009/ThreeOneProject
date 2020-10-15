@@ -1,6 +1,7 @@
 {
     "cmake.configureOnOpen": false,
+    "cmake.cmakePath": "D:/MyC_C++/CMake/bin/cmake",
     "files.associations": {
         "PP.C": "c"
-    }
+    } 
 }
