@@ -14,7 +14,7 @@ char *p3 = "Hello world !";
 int i = 0;
 main() {
     /* showstr(p1, p2, p3, 0); */
-    showstr3(p1, p2, p3, 0);
+    showstr2(p1, p2, p3, 0);
 }
 void showstr(char *str, ...) {
     /*     printf("%x\n", _BP);
