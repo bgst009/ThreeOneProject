@@ -1,6 +1,6 @@
 #include "list.h"
 
-char a[20] = "Hello world !";
+char a[20] = "Hello world!";
 void showlist(List *);
 int putelement(EleType *);
 
@@ -8,7 +8,7 @@ main() {
     List *plist;
     int n = 0;
 
-    plist = CreateList();
+    plist = CreateList(sizeof(a) / sizeof(a[0]));
     if (!plist) {
         printf("CreateList failed\n");
         return;
