@@ -1,6 +1,12 @@
 #include "stack.h"
-
+Stack *InfixToPostfix(char *str);
+int Priority(char);
+void cal1();
 main() {
+    cal1();
+    return 0;
+}
+void cal1() {
     char str[100];
     int n;
     char t;
@@ -53,5 +59,69 @@ main() {
     }
     top(vals, &v);
     printf("\t %d", v);
-    return 0;
+}
+Stack *InfixToPostfix(char *str) {
+    Stack *ops, *res;
+    int i;
+    char c;
+    char top_v;
+
+    ops = InitializeStack(sizeof(str[0]));
+    res = InitializeStack(sizeof(str[0]));
+
+    for (i = 0; str[i] != '\0'; i++) {
+        c = str[i];
+        if (c == '+' || c == '-' || c == '*' || c == '/') { /* 运算符 */
+        lp:
+            top(ops, (char *)&top_v);
+            pop(ops);
+            if (top_v == '(' || isEmpty(ops)) {
+                push(ops, (char *)&top_v);
+            } else if (Priority(c) - Priority(top_v) == 1) {
+                /* 先级比栈顶运算符的高 */
+                push(ops, (char *)&top_v);
+            } else {
+                push(res, (char *)&top_v);
+                goto lp;
+            }
+        } else if (c == '(' || c == ')') { /* 括号 */
+            if (c == '(') {
+                push(ops, &c);
+            } else { /* c==')' */
+                top(ops, (char *)&top_v);
+                pop(ops);
+                while (top_v != '(') {
+                    push(res, (char *)&top_v);
+                    top(ops, (char *)&top_v);
+                    pop(ops);
+                }
+            }
+        } else { /* 操作数 */
+            push(res, (char *)&c);
+        }
+    }
+    while (!isEmpty(ops)) {
+        top(ops, (char *)&top_v);
+        pop(ops);
+        push(res, (char *)&top_v);
+    }
+
+    while (!isEmpty(res)) {
+        top(res, (char *)&top_v);
+        pop(res);
+        printf("%c ", top_v);
+    }
+}
+int Priority(char op) {
+    switch (op) {
+    case '+':
+        return 1;
+    case '-':
+        return 1;
+    case '*':
+        return 2;
+    case '/':
+        return 2;
+    }
+    return -1;
 }
