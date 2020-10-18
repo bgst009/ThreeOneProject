@@ -1,0 +1,143 @@
+<!doctype html>
+<html>
+<head>
+<meta charset='UTF-8'><meta name='viewport' content='width=device-width initial-scale=1'>
+<title>1009_综合研究10研究报告</title></head>
+<body><h1>C语言综合研究与高强度程序设计训练10</h1>
+<blockquote><p>阅读下面的内容，理解每一个细节，然后构选程序来描述函数指针数组的用法和向函数传函数指针的方法</p>
+<p>关于函数指针</p>
+<p>指针的值是地址，函数指针的值是函数的入口地址</p>
+<p>下面与<code>int</code>·型变量对比，说明函数指针变量的定义方法</p>
+<p><code>int a;</code>整型变量a</p>
+<p><code>int*a;</code>整型指针变量a</p>
+<p><code>int a(char,char)</code>;函数<code>a</code>，函数类型为:返回值为<code>int</code>，参数为<code>char</code>、<code>char</code></p>
+<p><code>int (*a)(char,char);</code>返回值为<code>int</code>，参数为 <code>charchar</code>的函数的函数指针变量a</p>
+<p>可见类型加 <code>*</code> 则表示指向某种类型的指针。</p>
+<p>为什么<code>int*a</code>直接加<code>＊</code>，而<code>int（*a）（char，char）</code>要用括号？</p>
+<p>如果不加括号<code>:int＊a（char，char）</code>是返回<code>int＊</code>的函数。为了不和函数<code>int*a（ char char）</code>混淆加上括号，<code>int（*a）（char，char</code>）表示一个指向函数的指针。</p>
+<p>下面与<code>int</code>型对比，说明函数指针类型的描述方法:</p>
+<p><code>int a;</code>整型变量a</p>
+<p><code>int</code>整型</p>
+<p><code>int (*a)(char,char);</code>函数指针a</p>
+<p><code>int (*)(char,char);</code>函数指针<code>a</code>返回值为<code>int</code>型，参数为<code>char</code>、<code>char</code>的函数的函数指针</p>
+</blockquote>
+<blockquote><p>函数指针使用举例:</p>
+</blockquote>
+<ul>
+<li><p>程序1</p>
+<pre><code class='language-c' lang='c'>int f(char, char);
+main() {
+    int a;
+    int b;
+    long c;
+    int (*p)(char, char);
+
+    p = f;
+    b = (int)f;
+    c = (long)f;
+
+    printf(&quot;main=%x f=%x\n&quot;, main, f);
+    printf(&quot;p=%x    b=%x c=%lx\n&quot;, p, b, c);
+
+    a = p(1, 2);
+    printf(&quot;%d\n&quot;, a);
+
+    a = ((int (*)(char, char))b)(1, 2);
+    printf(&quot;%d\n&quot;, a);
+}
+int f(char a, char b) { return a + b; }
+</code></pre>
+</li>
+<li><p>程序2</p>
+<pre><code class='language-c' lang='c'>int far f(char, char);
+main() {
+    int a;
+    int b;
+    long c;
+    int(far * p)(char, char);
+
+    p = f;
+    b = (int)f;
+    c = (long)f;
+
+    printf(&quot;main offset=%x\n&quot;, main);
+    printf(&quot;main=%lx\n&quot;, (long)main);
+    printf(&quot;f offset=%x\n&quot;, (int)f);
+    printf(&quot;f=%lx\n&quot;, f);
+    printf(&quot;p=%lx b=%x c=%lx\n&quot;, p, b, c);
+
+    a = p(1, 2);
+    printf(&quot;%d\n&quot;, a);
+
+    a = ((int(far *)(char, char))c)(1, 2);
+    printf(&quot;%d\n&quot;, a);
+}
+int far f(char a, char b) { return a + b; }
+</code></pre>
+<p>&nbsp;</p>
+</li>
+
+</ul>
+<h2>向函数传函数指针</h2>
+<ul>
+<li><p>code</p>
+<pre><code class='language-c' lang='c'>int add(int a, int b) { return a + b; }
+int f2(int (*p)(int, int));
+int a;
+main() {
+    p = add;
+    a = f2(p);
+    printf(&quot;%d\n&quot;, a);
+}
+int f2(int (*p)(int, int)) {
+    printf(&quot;---------------f2-----------------\n&quot;);
+    return p(1, 2) + 1;
+}
+</code></pre>
+<p>&nbsp;</p>
+</li>
+<li><p>运行结果</p>
+<p><img src="https://gitee.com/bgst009/markdownPicUrl/raw/master/20201009102929.png" referrerpolicy="no-referrer" alt="image-20201009102929141"></p>
+</li>
+
+</ul>
+<h2>函数指针数组的用法</h2>
+<ul>
+<li><p>code</p>
+<pre><code class='language-c' lang='c'>int add(int a, int b) { return a + b; }
+int sub(int a, int b) { return a - b; }
+int mul(int a, int b) { return a * b; }
+int div(int a, int b) { return a / b; }
+int f2(int (*p)(int, int));
+void f3(int (*p[])(int, int), int);
+int (*p)(int, int);
+int (*pb[4])(int, int) = {add, sub, mul, div};
+int a;
+int i;
+main() {
+    p = add;
+    a = f2(p);
+    printf(&quot;%d\n&quot;, a);
+    f3(pb, 4);
+}
+int f2(int (*p)(int, int)) {
+    printf(&quot;---------------f2-----------------\n&quot;);
+    return p(1, 2) + 1;
+}
+void f3(int (*p[])(int, int), int size) {
+    printf(&quot;---------------f3-----------------\n&quot;);
+    for (i = 0; i &lt; size; i++) {
+        a = p[i](8, 4);
+        printf(&quot;%d\n&quot;, a);
+    }
+}
+</code></pre>
+<p>&nbsp;</p>
+</li>
+<li><p>运行结果</p>
+<p><img src="https://gitee.com/bgst009/markdownPicUrl/raw/master/20201009103102.png" referrerpolicy="no-referrer" alt="image-20201009103102619"></p>
+</li>
+
+</ul>
+</body>
+</html>
