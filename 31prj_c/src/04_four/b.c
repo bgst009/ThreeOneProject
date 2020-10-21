@@ -7,6 +7,7 @@ main() {
     b = f2(20, 10);
     a = func(a, b);
     printf("%d\n", a);
+    /* printf("%lx", (long)f3); */
 }
 
 int func(int a, int b) { return a * b; }
