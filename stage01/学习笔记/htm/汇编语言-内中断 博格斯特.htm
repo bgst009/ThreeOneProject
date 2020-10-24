@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="zh-Hans"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="https://bgst007.gitee.io/blog/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="https://bgst007.gitee.io/blog/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="https://bgst007.gitee.io/blog/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="https://bgst007.gitee.io/blog/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80-%E5%86%85%E4%B8%AD%E6%96%AD%20%E5%8D%9A%E6%A0%BC%E6%96%AF%E7%89%B9_files/main.css">
+
+
+<link rel="stylesheet" href="%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80-%E5%86%85%E4%B8%AD%E6%96%AD%20%E5%8D%9A%E6%A0%BC%E6%96%AF%E7%89%B9_files/all.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"bgst007.gitee.io","root":"/blog/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="内中断 1.产生 除法溢出 单步执行 执行into指令 执行Int 指令  2. 中断处理程序3. 中断向量表 中断程序的入口地址 存放256个中断程序入口地址 存放在 0000:0000 到 0000:03FF 一个表项占两个字，高-&gt;段地址CS 低-&gt;偏移地址IP  4.中断的过程 取得中断类型码N pushf TF=0,IF=0 push CS push IP $$(IP)=(">
+<meta property="og:type" content="article">
+<meta property="og:title" content="汇编语言-内中断">
+<meta property="og:url" content="http://bgst007.gitee.io/blog/2020/02/17/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80-%E5%86%85%E4%B8%AD%E6%96%AD/index.html">
+<meta property="og:site_name" content="博格斯特">
+<meta property="og:description" content="内中断 1.产生 除法溢出 单步执行 执行into指令 执行Int 指令  2. 中断处理程序3. 中断向量表 中断程序的入口地址 存放256个中断程序入口地址 存放在 0000:0000 到 0000:03FF 一个表项占两个字，高-&gt;段地址CS 低-&gt;偏移地址IP  4.中断的过程 取得中断类型码N pushf TF=0,IF=0 push CS push IP $$(IP)=(">
+<meta property="article:published_time" content="2020-02-17T14:40:53.000Z">
+<meta property="article:modified_time" content="2020-03-23T05:22:01.000Z">
+<meta property="article:author" content="xin shen">
+<meta property="article:tag" content="归纳">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://bgst007.gitee.io/blog/2020/02/17/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80-%E5%86%85%E4%B8%AD%E6%96%AD/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>汇编语言-内中断 | 博格斯特</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<style type="text/css">._th-container ._th-item{margin-bottom:3px;position:relative;width:30px;height:30px;cursor:pointer;opacity:.3;background-color:aquamarine;border-radius:100%;text-align:center;line-height:30px;-webkit-transition:all .35s;-o-transition:all .35s;transition:all .35s;right:30px}._th-container ._th-item._item-x2{margin-left:18px;width:40px;height:40px;line-height:40px}._th-container ._th-item._item-x-2{margin-left:17px;width:38px;height:38px;line-height:38px}._th-container ._th-item._item-x4{width:36px;height:36px;margin-left:16px;line-height:36px}._th-container ._th-item._item-x-4{width:32px;height:32px;line-height:32px;margin-left:14px}._th-container ._th-item._item-reset{width:30px;line-height:30px;height:30px;margin-left:10px}._th-click-hover{position:relative;-webkit-transition:all .5s;-o-transition:all .5s;transition:all .5s;height:50px;width:50px;cursor:pointer;opacity:.3;border-radius:100%;background-color:aquamarine;text-align:center;line-height:50px;right:0}._th-container:hover{left:-10px}._th-container{font-size:12px;-webkit-transition:all .5s;-o-transition:all .5s;transition:all .5s;left:-40px;top:20%;position:fixed;-webkit-box-sizing:border-box;box-sizing:border-box;z-index:100000;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}._th-container ._th-item:hover{opacity:.8;background-color:#5fb492;color:aliceblue}._th-container ._th-item:active{opacity:.9;background-color:#316347;color:aliceblue}._th-container:hover ._th-click-hover{opacity:.8}._th-container:hover ._th-item{opacity:.6;right:0}._th-container ._th-click-hover:hover{opacity:.8;background-color:#5fb492;color:aliceblue}._th_cover-all-show-times{position:fixed;top:0;right:0;width:100%;height:100%;z-index:99999;opacity:1;font-weight:900;font-size:30px;color:#4f4f4f;background-color:rgba(0,0,0,0.1)}._th_cover-all-show-times._th_hidden{z-index:-99999;opacity:0;-webkit-transition:1s all;-o-transition:1s all;transition:1s all}._th_cover-all-show-times ._th_times{width:300px;height:300px;border-radius:50%;background-color:rgba(127,255,212,0.51);text-align:center;line-height:300px;position:absolute;top:50%;right:50%;margin-top:-150px;margin-right:-150px;}</style></head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="https://bgst007.gitee.io/blog/" class="brand" rel="start" style="opacity: 1;">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title" style="opacity: 1; top: 0px;">博格斯特</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description" style="opacity: 1; top: 0px;">日常</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home" style="opacity: 1; transform: translateY(0px);">
+
+    <a href="https://bgst007.gitee.io/blog/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags" style="opacity: 1; transform: translateY(0px);">
+
+    <a href="https://bgst007.gitee.io/blog/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags<span class="badge">16</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories" style="opacity: 1; transform: translateY(0px);">
+
+    <a href="https://bgst007.gitee.io/blog/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories<span class="badge">6</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives" style="opacity: 1; transform: translateY(0px);">
+
+    <a href="https://bgst007.gitee.io/blog/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives<span class="badge">31</span></a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope="" itemtype="http://schema.org/Article" class="post-block" style="opacity: 1; display: block;" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://bgst007.gitee.io/blog/2020/02/17/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80-%E5%86%85%E4%B8%AD%E6%96%AD/">
+
+    <span itemprop="author" itemscope="" itemtype="http://schema.org/Person" hidden="">
+      <meta itemprop="image" content="https://gitee.com/bgst007/markdownPicUrl/raw/master/img20200214123014.jpeg">
+      <meta itemprop="name" content="xin shen">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization" hidden="">
+      <meta itemprop="name" content="博格斯特">
+    </span>
+      <header class="post-header" style="opacity: 1; display: block; transform: translateY(0px);">
+        <h1 class="post-title" itemprop="name headline">
+          汇编语言-内中断
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2020-02-17 22:40:53" itemprop="dateCreated datePublished" datetime="2020-02-17T22:40:53+08:00">2020-02-17</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2020-03-23 13:22:01" itemprop="dateModified" datetime="2020-03-23T13:22:01+08:00">2020-03-23</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="https://bgst007.gitee.io/blog/categories/%E7%8E%8B%E7%88%BD%E6%B1%87%E7%BC%96/" itemprop="url" rel="index"><span itemprop="name">王爽汇编</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody" style="opacity: 1; display: block; transform: translateY(0px);">
+
+      
+        <p> 内中断</p>
+<h2 id="1-产生"><a href="#1-产生" class="headerlink" title="1.产生"></a>1.产生</h2><ol>
+<li>除法溢出</li>
+<li>单步执行</li>
+<li>执行into指令</li>
+<li>执行Int 指令</li>
+</ol>
+<h2 id="2-中断处理程序"><a href="#2-中断处理程序" class="headerlink" title="2. 中断处理程序"></a>2. 中断处理程序</h2><h2 id="3-中断向量表"><a href="#3-中断向量表" class="headerlink" title="3. 中断向量表"></a>3. 中断向量表</h2><ul>
+<li>中断程序的入口地址</li>
+<li>存放256个中断程序入口地址</li>
+<li>存放在 <strong>0000:0000</strong> 到 <strong>0000:03FF</strong></li>
+<li>一个表项占两个字，高-&gt;段地址<strong>CS</strong> 低-&gt;偏移地址<strong>IP</strong></li>
+</ul>
+<h2 id="4-中断的过程"><a href="#4-中断的过程" class="headerlink" title="4.中断的过程"></a>4.中断的过程</h2><ol>
+<li>取得中断类型码N</li>
+<li>pushf</li>
+<li>TF=0,IF=0</li>
+<li>push CS</li>
+<li>push IP</li>
+<li>$$(IP)=(N<em>4),CS=(N</em>4)+2$$</li>
+<li>开始执行中断程序</li>
+</ol>
+<h2 id="5-中断处理程序和iret指令"><a href="#5-中断处理程序和iret指令" class="headerlink" title="5.中断处理程序和iret指令"></a>5.中断处理程序和iret指令</h2><ul>
+<li>中断程序写法的常规步骤<ul>
+<li>保存要用的寄存器</li>
+<li>处理中断</li>
+<li>回复寄存器</li>
+<li>用iret指令返回 –&gt; pop ip,pop cs,pop popf(pop psw)</li>
+</ul>
+</li>
+</ul>
+<h2 id="6-除法错误中断的处理"><a href="#6-除法错误中断的处理" class="headerlink" title="6. 除法错误中断的处理"></a>6. 除法错误中断的处理</h2><pre><code>1. 出现溢出
+ 2. 产生0号中断信息
+ 3. 执行0号中断
+ 4. 返回操作系统</code></pre><h2 id="7-编程处理0号中断"><a href="#7-编程处理0号中断" class="headerlink" title="7. 编程处理0号中断"></a>7. 编程处理0号中断</h2><blockquote>
+<p>分析：</p>
+<ol>
+<li>当发生除法溢出时，产生0号中断信息，从而引发中断过程<ol>
+<li>取得中断类型码N</li>
+<li>pushf</li>
+<li>TF=0,IF=0</li>
+<li>push CS</li>
+<li>push IP</li>
+<li>$$(IP)=(N<em>4),CS=(N</em>4)+2$$</li>
+</ol>
+</li>
+<li>发生0号中断时，Cpu转去执行中断处理程序<ol>
+<li>相关处理</li>
+<li>向显示缓冲区送字符串</li>
+<li>返回DOS</li>
+<li>==do0==</li>
+</ol>
+</li>
+<li>do0的程序应该放在那里<ol>
+<li>放在0号中断的向量表中0000:0200-0000:02FF</li>
+</ol>
+</li>
+<li>中断程序的入口地址放在那里<ol>
+<li>cs:0000:0002,ip:0000:0000</li>
+</ol>
+</li>
+</ol>
+<p>总结</p>
+<ol>
+<li>编写中断处理程序do0</li>
+<li>将do0送入0000:0200</li>
+<li>将do0的入口地址送到存储在中断向量表0号表项中</li>
+</ol>
+</blockquote>
+<figure class="highlight plain"><div class="table-container"><table><tbody><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">assume cs:code</span><br><span class="line"></span><br><span class="line">code segment</span><br><span class="line"></span><br><span class="line">start:	do0安装程序</span><br><span class="line">		设置中断向量表</span><br><span class="line">		mov ax,4c00h</span><br><span class="line">		int 21h</span><br><span class="line">do0:	显示字符串“overflow”</span><br><span class="line">		mov ax,4c00h</span><br><span class="line">		int 21h</span><br><span class="line"></span><br><span class="line">code ends</span><br><span class="line">end start</span><br></pre></td></tr></tbody></table></div></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="https://bgst007.gitee.io/blog/tags/%E5%BD%92%E7%BA%B3/" rel="tag"># 归纳</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="https://bgst007.gitee.io/blog/2020/02/17/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80-%E6%A0%87%E5%BF%97%E5%AF%84%E5%AD%98%E5%99%A8/" rel="prev" title="汇编语言-标志寄存器">
+      <i class="fa fa-chevron-left"></i> 汇编语言-标志寄存器
+    </a></div>
+      <div class="post-nav-item">
+    <a href="https://bgst007.gitee.io/blog/2020/02/17/%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80-%E7%AB%AF%E5%8F%A3/" rel="next" title="汇编语言-端口">
+      汇编语言-端口 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar" style="margin-top: 303px;">
+    <div class="sidebar-inner affix-top" style="opacity: 1; transform: initial;">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc sidebar-nav-active">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel sidebar-panel-active" style="max-height: 848px; opacity: 1;">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2 active active-current"><a class="nav-link" href="#1-产生"><span class="nav-number">1.</span> <span class="nav-text">1.产生</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-中断处理程序"><span class="nav-number">2.</span> <span class="nav-text">2. 中断处理程序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-中断向量表"><span class="nav-number">3.</span> <span class="nav-text">3. 中断向量表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-中断的过程"><span class="nav-number">4.</span> <span class="nav-text">4.中断的过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-中断处理程序和iret指令"><span class="nav-number">5.</span> <span class="nav-text">5.中断处理程序和iret指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-除法错误中断的处理"><span class="nav-number">6.</span> <span class="nav-text">6. 除法错误中断的处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-编程处理0号中断"><span class="nav-number">7.</span> <span class="nav-text">7. 编程处理0号中断</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel" style="opacity: 0; max-height: 848px;">
+        <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="xin shen" src="%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80-%E5%86%85%E4%B8%AD%E6%96%AD%20%E5%8D%9A%E6%A0%BC%E6%96%AF%E7%89%B9_files/img20200214123014.jfif">
+  <p class="site-author-name" itemprop="name">xin shen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="https://bgst007.gitee.io/blog/archives/">
+        
+          <span class="site-state-item-count">31</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="https://bgst007.gitee.io/blog/categories/">
+          
+        <span class="site-state-item-count">6</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="https://bgst007.gitee.io/blog/tags/">
+          
+        <span class="site-state-item-count">16</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  © 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xin shen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> &amp; <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80-%E5%86%85%E4%B8%AD%E6%96%AD%20%E5%8D%9A%E6%A0%BC%E6%96%AF%E7%89%B9_files/anime.js"></script>
+  <script src="%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80-%E5%86%85%E4%B8%AD%E6%96%AD%20%E5%8D%9A%E6%A0%BC%E6%96%AF%E7%89%B9_files/velocity.js"></script>
+  <script src="%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80-%E5%86%85%E4%B8%AD%E6%96%AD%20%E5%8D%9A%E6%A0%BC%E6%96%AF%E7%89%B9_files/velocity_002.js"></script>
+
+<script src="%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80-%E5%86%85%E4%B8%AD%E6%96%AD%20%E5%8D%9A%E6%A0%BC%E6%96%AF%E7%89%B9_files/utils.js"></script>
+
+<script src="%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80-%E5%86%85%E4%B8%AD%E6%96%AD%20%E5%8D%9A%E6%A0%BC%E6%96%AF%E7%89%B9_files/motion.js"></script>
+
+
+<script src="%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80-%E5%86%85%E4%B8%AD%E6%96%AD%20%E5%8D%9A%E6%A0%BC%E6%96%AF%E7%89%B9_files/pisces.js"></script>
+
+
+<script src="%E6%B1%87%E7%BC%96%E8%AF%AD%E8%A8%80-%E5%86%85%E4%B8%AD%E6%96%AD%20%E5%8D%9A%E6%A0%BC%E6%96%AF%E7%89%B9_files/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+
+<div><div class="_th-container">
+    <div class="_th-click-hover" onclick="changeTime()">
+        x1
+    </div>
+    <div class="_th-item _item-x2" onclick="changeTime(2,0,true)">&gt;</div>
+    <div class="_th-item _item-x-2" onclick="changeTime(-2,0,true)">&lt;</div>
+    <div class="_th-item _item-x4" onclick="changeTime(0,4)">&gt;&gt;</div>
+    <div class="_th-item _item-x-4" onclick="changeTime(0,-4)">&lt;&lt;</div>
+    <div class="_th-item _item-reset" onclick="changeTime(0,0,false,true)">O</div>
+</div>
+<div class="_th_cover-all-show-times _th_hidden">
+    <div class="_th_times">x1</div>
+</div></div></body></html>
