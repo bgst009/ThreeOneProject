@@ -1,4 +1,0 @@
-WSL not found at: C:\Users\14991\AppData\Local\Microsoft\WindowsApps\debian.exe Configure
-
-Cannot get compiler information:
-	Connection refused: connect
