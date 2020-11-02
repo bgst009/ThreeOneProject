@@ -1,4 +1,5 @@
 char *codes = "+-*/";
+typedef int (**func)(int, int);
 int add(int a, int b) {
     printf("++++++\n");
     return a + b;

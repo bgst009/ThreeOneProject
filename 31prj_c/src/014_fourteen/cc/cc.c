@@ -1,5 +1,5 @@
 main(int n, char **arg) {
-    int i;
+    int i, j;
 
     char a[20] = "tcc -c ";
     char b[80] = "tlink c0s main ";
@@ -7,28 +7,32 @@ main(int n, char **arg) {
     char d[20] = " ,,cs.lib ";
     char f[5] = " ";
 
-    for (i = 0; arg[1][i] != '\0'; i++) {
-        if (arg[1][i] == '.') {
-            arg[1][i] = '\0';
-        }
-    }
-
-    for (i = 0; arg[2][i] != '\0'; i++) {
-        if (arg[2][i] == '.') {
-            arg[2][i] = '\0';
+    /* delete postfix */
+    for (i = 0; i < n && arg[i][0] != ','; i++) {
+        for (j = 0; arg[i][j] != 0; j++) {
+            if (arg[i][j] == '.') {
+                arg[i][j] = '\0';
+            }
         }
     }
     system("cls");
-    strcat(a, arg[1]);
+    /* tcc */
+    for (i = 1; i < n && arg[i][0] != ','; i++) {
+        strcat(a, arg[i]);
+        strcat(a, f);
+    }
+    /*     printf("%s\n", a); */
     system(a);
-    /* printf("%s\n", a); */
 
-    strcat(b, arg[1]);
-    strcat(b, f);
-    strcat(b, arg[2]);
+    /* tlink */
+    for (i = 1; i < n && arg[i][0] != ','; i++) {
+        strcat(b, arg[i]);
+        strcat(b, f);
+    }
     strcat(b, c);
-    strcat(b, arg[1]);
+    strcat(b, arg[i + 1]);
     strcat(b, d);
+    /*     printf("%s\n", b); */
+
     system(b);
-    /* printf("%s\n", b); */
 }
